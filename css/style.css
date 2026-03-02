@@ -1,0 +1,28 @@
+/* Make the canvas fill the whole screen and stay in the back */
+#fluid-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* This moves it to the very bottom of the stack */
+}
+
+/* Make your text look nice and sit on top */
+.content {
+    position: relative;
+    z-index: 1; /* This moves it above the canvas */
+    color: white;
+    text-align: center;
+    margin-top: 20%;
+    font-family: sans-serif;
+    
+    /* Crucial: This lets your mouse "reach through" the invisible 
+       parts of this layer to touch the fluid underneath */
+    pointer-events: none; 
+}
+
+/* But we still want to be able to click buttons! */
+.content button {
+    pointer-events: auto; 
+}
