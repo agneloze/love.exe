@@ -1,48 +1,198 @@
-/* Make the canvas fill the whole screen and stay in the back */
-#fluid-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* This moves it to the very bottom of the stack */
-}
+ <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* Make your text look nice and sit on top */
-.content {
-    position: relative;
-    z-index: 1; /* This moves it above the canvas */
-    color: white;
-    text-align: center;
-    margin-top: 20%;
-    font-family: sans-serif;
-    .content {
-    /* Glassmorphism effect: makes a blurry box behind your text */
-    background: rgba(255, 255, 255, 0.1); 
-    backdrop-filter: blur(10px);
-    padding: 2rem;
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    
-    /* Center it perfectly */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-    
-    /* Crucial: This lets your mouse "reach through" the invisible 
-       parts of this layer to touch the fluid underneath */
-    pointer-events: none; 
-}
-canvas {
-    display: block;
-    width: 100vw;
-    height: 100vh;
-    background-color: black; /* This ensures you can see it! */
-}
+        :root {
+            --burgundy: #5c1a2a;
+            --dusty-rose: #8b4057;
+            --champagne: #c9a96e;
+            --ivory: #f2ead8;
+            --deep-bg: #080306;
+            --mid-bg: #110810;
+        }
 
-/* But we still want to be able to click buttons! */
-.content button {
-    pointer-events: auto; 
-}
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--deep-bg);
+        }
+
+        #fluid-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Vignette overlay */
+        .vignette {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(ellipse at center,
+                transparent 30%,
+                rgba(4, 1, 5, 0.55) 70%,
+                rgba(4, 1, 5, 0.85) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Grain texture */
+        .grain {
+            position: fixed;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.028;
+            z-index: 2;
+            pointer-events: none;
+            animation: grain-move 8s steps(10) infinite;
+        }
+
+        @keyframes grain-move {
+            0%   { transform: translate(0, 0); }
+            10%  { transform: translate(-2%, -3%); }
+            20%  { transform: translate(3%, 1%); }
+            30%  { transform: translate(-1%, 4%); }
+            40%  { transform: translate(4%, -2%); }
+            50%  { transform: translate(-3%, 0%); }
+            60%  { transform: translate(1%, 3%); }
+            70%  { transform: translate(-4%, -1%); }
+            80%  { transform: translate(2%, -4%); }
+            90%  { transform: translate(-2%, 2%); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* Main content container */
+        .content {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            pointer-events: none;
+        }
+
+        /* Top decorative rule */
+        .ornament {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            color: var(--champagne);
+            opacity: 0.45;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            margin-bottom: 2.8rem;
+            animation: fade-in 3s ease forwards;
+            animation-delay: 0.5s;
+            opacity: 0;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 0.45; transform: translateY(0); }
+        }
+
+        /* Text SVG wrapper */
+        .text-svg-wrap {
+            width: min(72vw, 600px);
+            animation: rise-in 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+
+        .text-svg-wrap svg, .text-svg-wrap img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @keyframes rise-in {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1;  transform: translateY(0); }
+        }
+
+        /* Thin divider line */
+        .divider {
+            width: min(30vw, 200px);
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--champagne), transparent);
+            opacity: 0.35;
+            margin: 2rem 0;
+            animation: fade-in 3s ease forwards;
+            animation-delay: 0.8s;
+            opacity: 0;
+        }
+
+        /* Heart SVG wrapper */
+        .heart-svg-wrap {
+            width: min(22vw, 160px);
+            animation: rise-in 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.5s;
+            opacity: 0;
+            filter: drop-shadow(0 0 28px rgba(180, 40, 60, 0.35)) drop-shadow(0 0 8px rgba(120, 20, 40, 0.4));
+        }
+
+        .heart-svg-wrap svg, .heart-svg-wrap img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Subtle heartbeat pulse */
+        @keyframes heartbeat {
+            0%   { transform: scale(1); }
+            14%  { transform: scale(1.04); }
+            28%  { transform: scale(1); }
+            42%  { transform: scale(1.025); }
+            70%  { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+
+        .heart-svg-wrap {
+            animation: rise-in 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                       heartbeat 3.6s ease-in-out 3s infinite;
+        }
+
+        /* Bottom tag line */
+        .tagline {
+            font-family: 'IM Fell English', serif;
+            font-style: italic;
+            font-size: clamp(0.7rem, 1.5vw, 0.95rem);
+            color: var(--ivory);
+            opacity: 0;
+            letter-spacing: 0.08em;
+            margin-top: 2.2rem;
+            animation: fade-in 3s ease forwards;
+            animation-delay: 1.4s;
+        }
+
+        /* Floating rose petals */
+        .petal {
+            position: fixed;
+            top: -40px;
+            width: 6px;
+            height: 9px;
+            border-radius: 50% 50% 40% 40%;
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+            animation: petal-fall linear infinite;
+        }
+
+        @keyframes petal-fall {
+            0%   { opacity: 0; transform: translateY(0) rotate(0deg) translateX(0); }
+            5%   { opacity: 0.35; }
+            90%  { opacity: 0.2; }
+            100% { opacity: 0; transform: translateY(110vh) rotate(540deg) translateX(40px); }
+        }
+    </style>
