@@ -16,10 +16,30 @@
     text-align: center;
     margin-top: 20%;
     font-family: sans-serif;
+    .content {
+    /* Glassmorphism effect: makes a blurry box behind your text */
+    background: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    /* Center it perfectly */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
     
     /* Crucial: This lets your mouse "reach through" the invisible 
        parts of this layer to touch the fluid underneath */
     pointer-events: none; 
+}
+canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    background-color: black; /* This ensures you can see it! */
 }
 
 /* But we still want to be able to click buttons! */
