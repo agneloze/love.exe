@@ -1,17 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>love.exe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+   
 </head>
 <body>
-    <canvas id="fluid-canvas"></canvas>
-    
-    <div class="content">
-        <h1>love.exe</h1>
-        <p>i love you</p>
-        <button>Click Me</button>
+
+<canvas id="fluid-canvas"></canvas>
+<div class="vignette"></div>
+<div class="grain"></div>
+
+<div class="content">
+    <p class="ornament">— est. forever —</p>
+
+    <div class="text-svg-wrap" id="text-svg-container">
+        <!-- text.svg injected here -->
     </div>
 
-<script src="js/fluid-logic.js"></script>
+    <div class="divider"></div>
+
+    <div class="heart-svg-wrap" id="heart-svg-container">
+        <!-- heart1.svg injected here -->
+    </div>
+
+    <p class="tagline">you & i, endlessly</p>
+</div>
+
+<script>
+    // Inject SVGs inline so we can control them
+    async function loadSVG(url, containerId) {
+        try {
+            const res = await fetch(url);
+            const text = await res.text();
+            document.getElementById(containerId).innerHTML = text;
+        } catch(e) {
+            // fallback img tag
+            const img = document.createElement('img');
+            img.src = url;
+            document.getElementById(containerId).appendChild(img);
+        }
+    }
+
+    loadSVG('text.svg', 'text-svg-container');
+    loadSVG('heart1.svg', 'heart-svg-container');
+
+    // Spawn floating petals
+    const petalColors = ['#7a2035', '#9c3d52', '#c9a96e', '#6b1828', '#8b4057'];
+    for (let i = 0; i < 14; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        petal.style.left = (Math.random() * 100) + 'vw';
+        petal.style.background = petalColors[Math.floor(Math.random() * petalColors.length)];
+        petal.style.animationDuration = (12 + Math.random() * 20) + 's';
+        petal.style.animationDelay = (Math.random() * 20) + 's';
+        petal.style.width = (4 + Math.random() * 5) + 'px';
+        petal.style.height = (6 + Math.random() * 7) + 'px';
+        petal.style.opacity = (0.15 + Math.random() * 0.25);
+        document.body.appendChild(petal);
+    }
+</script>
+
+<script src="fluid-logic.js"></script>
 </body>
 </html>
