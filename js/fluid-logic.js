@@ -10,31 +10,31 @@ function resizeCanvas() {
     canvas.height = window.innerHeight;
 }
 let config = {
-    SIM_RESOLUTION: 128,
-    DYE_RESOLUTION: 1024,
-    CAPTURE_RESOLUTION: 512,
-    DENSITY_DISSIPATION: 1,
-    VELOCITY_DISSIPATION: 0.2,
-    PRESSURE: 0.8,
-    PRESSURE_ITERATIONS: 20,
-    CURL: 30,
-    SPLAT_RADIUS: 0.25,
-    SPLAT_FORCE: 6000,
+    SIM_RESOLUTION: 64,
+    DYE_RESOLUTION: 512,
+    CAPTURE_RESOLUTION: 256,
+    DENSITY_DISSIPATION: 1.8,
+    VELOCITY_DISSIPATION: 0.4,
+    PRESSURE: 0.6,
+    PRESSURE_ITERATIONS: 15,
+    CURL: 12,
+    SPLAT_RADIUS: 0.35,
+    SPLAT_FORCE: 4000,
     SHADING: true,
-    COLORFUL: true,
-    COLOR_UPDATE_SPEED: 10,
+    COLORFUL: false,
+    COLOR_UPDATE_SPEED: 3,
     PAUSED: false,
-    BACK_COLOR: { r: 0, g: 0, b: 0 },
+    BACK_COLOR: { r: 8, g: 3, b: 6 },
     TRANSPARENT: false,
     BLOOM: true,
-    BLOOM_ITERATIONS: 8,
-    BLOOM_RESOLUTION: 256,
-    BLOOM_INTENSITY: 0.8,
-    BLOOM_THRESHOLD: 0.6,
+    BLOOM_ITERATIONS: 4,
+    BLOOM_RESOLUTION: 128,
+    BLOOM_INTENSITY: 0.4,
+    BLOOM_THRESHOLD: 0.5,
     BLOOM_SOFT_KNEE: 0.7,
-    SUNRAYS: true,
-    SUNRAYS_RESOLUTION: 196,
-    SUNRAYS_WEIGHT: 1.0,
+    SUNRAYS: false,
+    SUNRAYS_RESOLUTION: 128,
+    SUNRAYS_WEIGHT: 0.5,
 }
 
 function pointerPrototype () {
@@ -1412,11 +1412,17 @@ function correctDeltaY (delta) {
 }
 
 function generateColor () {
-    let c = HSVtoRGB(Math.random(), 1.0, 1.0);
-    c.r *= 0.15;
-    c.g *= 0.15;
-    c.b *= 0.15;
-    return c;
+    // Old money romantic palette: burgundy, dusty rose, champagne gold, deep wine, muted mauve
+    const palette = [
+        { r: 0.38, g: 0.02, b: 0.07 },
+        { r: 0.32, g: 0.12, b: 0.16 },
+        { r: 0.40, g: 0.28, b: 0.10 },
+        { r: 0.28, g: 0.01, b: 0.05 },
+        { r: 0.22, g: 0.08, b: 0.14 },
+        { r: 0.42, g: 0.26, b: 0.18 },
+        { r: 0.30, g: 0.04, b: 0.12 },
+    ];
+    return palette[Math.floor(Math.random() * palette.length)];
 }
 
 function HSVtoRGB (h, s, v) {
