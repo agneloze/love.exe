@@ -102,12 +102,32 @@
             to   { opacity: 0.45; transform: translateY(0); }
         }
 
-        /* Text SVG wrapper */
-        .text-svg-wrap {
-            width: min(72vw, 600px);
+        /* Glass container for SVGs */
+        .glass-container {
+            width: min(50vw, 350px);
+            height: min(50vw, 350px);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
             animation: rise-in 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation-delay: 0.2s;
             opacity: 0;
+        }
+
+        /* Text SVG wrapper */
+        .text-svg-wrap {
+            width: min(60vw, 450px);
+            animation: none;
+            opacity: 1;
         }
 
         .text-svg-wrap svg, .text-svg-wrap img {
@@ -126,19 +146,17 @@
             width: min(30vw, 200px);
             height: 1px;
             background: linear-gradient(to right, transparent, var(--champagne), transparent);
-            opacity: 0.35;
             margin: 2rem 0;
             animation: fade-in 3s ease forwards;
             animation-delay: 0.8s;
-            opacity: 0;
+            opacity: 0.35;
         }
 
         /* Heart SVG wrapper */
         .heart-svg-wrap {
-            width: min(22vw, 160px);
-            animation: rise-in 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation-delay: 0.5s;
-            opacity: 0;
+            width: min(35vw, 260px);
+            animation: none;
+            opacity: 1;
             filter: drop-shadow(0 0 28px rgba(180, 40, 60, 0.35)) drop-shadow(0 0 8px rgba(120, 20, 40, 0.4));
         }
 

@@ -18,14 +18,16 @@
 <div class="content">
     <p class="ornament">— est. forever —</p>
 
-    <div class="text-svg-wrap" id="text-svg-container">
-        <!-- text.svg injected here -->
-    </div>
+    <div class="glass-container">
+        <div class="text-svg-wrap" id="text-svg-container">
+            <!-- text.svg injected here -->
+        </div>
 
-    <div class="divider"></div>
+        <div class="divider"></div>
 
-    <div class="heart-svg-wrap" id="heart-svg-container">
-       
+        <div class="heart-svg-wrap" id="heart-svg-container">
+           
+        </div>
     </div>
 
     <p class="tagline">you & i, endlessly</p>
@@ -46,8 +48,8 @@
         }
     }
 
-    loadSVG('text.svg', 'text-svg-container');
-    loadSVG('heart1.svg', 'heart-svg-container');
+    loadSVG('assets/text.svg', 'text-svg-container');
+    loadSVG('assets/heart1.svg', 'heart-svg-container');
 
     // Spawn floating petals
     const petalColors = ['#7a2035', '#9c3d52', '#c9a96e', '#6b1828', '#8b4057'];
